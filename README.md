@@ -5,7 +5,7 @@ inquirer-radio-prompt
 [![Node.js Version](https://img.shields.io/node/v/inquirer-radio-prompt.svg)](https://nodejs.org/)
 [![License Type](https://img.shields.io/github/license/jbenner-radham/inquirer-radio-prompt.svg)](LICENSE)
 
-A radio button prompt for [Inquirer](https://github.com/SBoudrias/Inquirer.js/) based off of [@inquirer/checkbox](https://github.com/SBoudrias/Inquirer.js/tree/main/packages/checkbox).
+An [Inquirer](https://github.com/SBoudrias/Inquirer.js/) radio button prompt based off of [@inquirer/checkbox](https://github.com/SBoudrias/Inquirer.js/tree/main/packages/checkbox).
 
 ![Inquirer Radio Prompt](images/inquirer-radio-prompt-example.png)
 

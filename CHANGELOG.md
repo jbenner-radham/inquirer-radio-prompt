@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ------------
 ### Added
 - Documentation for the `default` configuration property in `README.md`.
+- The "prompt" keyword to `keywords` in `package.json`.
+
+### Changed
+- The wording of the package description slightly.
 
 [1.0.0] - 2024-10-08
 --------------------
