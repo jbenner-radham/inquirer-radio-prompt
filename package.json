@@ -8,6 +8,7 @@
     "command-line",
     "input",
     "inquirer",
+    "prompt",
     "radio",
     "radio-button",
     "stdin",
