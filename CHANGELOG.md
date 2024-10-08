@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Documentation for the `default` configuration property in `README.md`.
 - The "prompt" keyword to `keywords` in `package.json`.
+- Note to `README.md` that specifies that this is a pure ESM package.
 
 ### Changed
 - The wording of the package description slightly.
