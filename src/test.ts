@@ -1,20 +1,24 @@
 import radio, { Separator } from './index.js';
 
 const input = await radio({
-    default: 4,
+    // default: 4,
+    loop: false,
     message: 'Select a radio button',
     choices: [
         { name: '#1', value: 1 },
         { name: '#2', value: 2 },
         { name: '#3', value: 3 },
         { name: '#4', value: 4 },
-        new Separator(),
-        { name: '#5', value: 5, disabled: true },
+        { name: '#5', value: 5 },
         { name: '#6', value: 6 },
         { name: '#7', value: 7 },
         { name: '#8', value: 8 },
+        { name: '#9', value: 9 },
+        { name: '#10', value: 10 },
+        { name: '#11', value: 11 },
+        { name: '#12', value: 12 },
     ],
-    required: true
+    // required: true
 });
 
 console.log('input', input)

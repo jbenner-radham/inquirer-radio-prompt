@@ -175,7 +175,7 @@ export default createPrompt(
 
         const bounds = useMemo(() => {
             const first = items.findIndex(isSelectable);
-            const last = [...items].reverse().findIndex(isSelectable);
+            const last = items.findLastIndex(isSelectable);
 
             if (first === -1) {
                 throw new ValidationError(
