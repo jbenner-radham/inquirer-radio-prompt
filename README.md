@@ -7,6 +7,8 @@ inquirer-radio-prompt
 
 A radio button prompt for [Inquirer](https://github.com/SBoudrias/Inquirer.js/).
 
+![Inquirer Radio Prompt](images/inquirer-radio-prompt-example.png)
+
 Install
 -------
 ```sh
