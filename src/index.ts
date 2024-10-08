@@ -196,6 +196,7 @@ export default createPrompt(
                 if (required && !items.some(isChecked)) {
                     setError('One choice must be selected');
                 } else if (isValid === true) {
+                    // ^ Important to keep this check explicit since a string error value is implicitly true.
                     setStatus('done');
                     done(selection.map((choice) => choice.value).shift());
                 } else {
