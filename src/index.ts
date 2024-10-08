@@ -63,7 +63,6 @@ type Choice<Value> = {
     description?: string;
     short?: string;
     disabled?: boolean | string;
-    // checked?: boolean;
     type?: never;
 };
 
