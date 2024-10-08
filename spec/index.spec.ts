@@ -1,3 +1,6 @@
+/**
+ * Based upon: https://github.com/SBoudrias/Inquirer.js/blob/cce4867ad9d2eb70998d7032360d4c321a2c1b4d/packages/checkbox/checkbox.test.ts
+ */
 import { describe, it, expect } from 'vitest';
 import { render } from '@inquirer/testing';
 import { ValidationError } from '@inquirer/core';
