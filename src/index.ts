@@ -195,7 +195,7 @@ export default createPrompt(
                 const isValid = await validate([...selection]);
                 if (required && !items.some(isChecked)) {
                     setError('One choice must be selected');
-                } else if (isValid) {
+                } else if (isValid === true) {
                     setStatus('done');
                     done(selection.map((choice) => choice.value).shift());
                 } else {
