@@ -1,6 +1,6 @@
 {
   "name": "inquirer-radio-prompt",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "A radio button prompt for inquirer.",
   "keywords": [
     "answer",
