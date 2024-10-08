@@ -3,7 +3,19 @@
   "version": "0.0.0",
   "description": "A radio button prompt for inquirer.",
   "keywords": [
-    "inquirer"
+    "answer",
+    "cli",
+    "command-line",
+    "input",
+    "inquirer",
+    "radio",
+    "radio-button",
+    "stdin",
+    "stdout",
+    "terminal",
+    "tty",
+    "tui",
+    "ui"
   ],
   "repository": "github:jbenner-radham/inquirer-radio-prompt",
   "license": "MIT",
