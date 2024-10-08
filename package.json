@@ -36,8 +36,10 @@
     "clean": "rimraf dist",
     "lint": "eslint .",
     "lint:fix": "yarn lint --fix",
+    "prepare": "husky",
     "prepublishOnly": "npm run build",
-    "test": "vitest --watch=false"
+    "test": "vitest --watch=false",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@inquirer/core": "^10.0.0",
@@ -52,6 +54,7 @@
     "@inquirer/testing": "^2.1.35",
     "eslint": "^9.12.0",
     "globals": "^15.10.0",
+    "husky": "^9.1.6",
     "rimraf": "^6.0.1",
     "tsx": "^4.19.1",
     "typescript": "^5.6.2",
