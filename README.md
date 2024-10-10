@@ -24,7 +24,7 @@ const answer = await radio({
     message: 'Select a package manager',
     choices: [
         { name: 'npm', value: 'npm' },
-        { name: 'yarn', value: 'Yarn' },
+        { name: 'Yarn', value: 'yarn' },
         new Separator(),
         { name: 'pnpm', value: 'pnpm' }
     ]
@@ -73,7 +73,6 @@ Here's each property:
 Also note the `choices` array can contain `Separator`s to help organize long lists.
 
 `choices` can also be an array of strings, in which case the string will be used both as the `value` and the `name`.
-
 
 ### Theming
 
