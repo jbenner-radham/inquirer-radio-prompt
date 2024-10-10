@@ -23,6 +23,7 @@ export default [
     rules: {
       '@stylistic/arrow-parens': ['error', 'as-needed'],
       '@stylistic/comma-dangle': ['error', 'never'],
+      '@stylistic/comma-spacing': ['error', { before: false, after: true }],
       '@stylistic/eol-last': ['error', 'always'],
       '@stylistic/indent': ['error', 2],
       '@stylistic/linebreak-style': ['error', 'unix'],
