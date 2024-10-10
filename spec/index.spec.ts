@@ -7,1036 +7,1035 @@ import { ValidationError } from '@inquirer/core';
 import radio, { Separator } from '../src/index.js';
 
 const numberedChoices = [
-    { value: 1 },
-    { value: 2 },
-    { value: 3 },
-    { value: 4 },
-    { value: 5 },
-    { value: 6 },
-    { value: 7 },
-    { value: 8 },
-    { value: 9 },
-    { value: 10 },
-    { value: 11 },
-    { value: 12 }
+  { value: 1 },
+  { value: 2 },
+  { value: 3 },
+  { value: 4 },
+  { value: 5 },
+  { value: 6 },
+  { value: 7 },
+  { value: 8 },
+  { value: 9 },
+  { value: 10 },
+  { value: 11 },
+  { value: 12 }
 ];
 
 describe('radio prompt', () => {
-    it('uses arrow keys to select an option', async () => {
-        const { answer, events, getScreen } = await render(radio, {
-            message: 'Select a number',
-            choices: numberedChoices,
-        });
-
-        expect(getScreen()).toMatchInlineSnapshot(`
-          "? Select a number (Press <space> to select, and <enter> to proceed)
-          ❯◯ 1
-           ◯ 2
-           ◯ 3
-           ◯ 4
-           ◯ 5
-           ◯ 6
-           ◯ 7
-          (Use arrow keys to reveal more choices)"
-        `);
-
-        events.keypress('down');
-        events.keypress('space');
-        events.keypress('down');
-        events.keypress('space');
-
-        expect(getScreen()).toMatchInlineSnapshot(`
-          "? Select a number
-           ◯ 1
-           ◯ 2
-          ❯◉ 3
-           ◯ 4
-           ◯ 5
-           ◯ 6
-           ◯ 7"
-        `);
-
-        events.keypress('enter');
-
-        await expect(answer).resolves.toEqual(3);
-
-        expect(getScreen()).toMatchInlineSnapshot(`"✔ Select a number 3"`);
+  it('uses arrow keys to select an option', async () => {
+    const { answer, events, getScreen } = await render(radio, {
+      message: 'Select a number',
+      choices: numberedChoices
     });
 
-    it('works with string choices', async () => {
-        const { answer, events, getScreen } = await render(radio, {
-            message: 'Select an option',
-            choices: ['Option A', 'Option B', 'Option C'],
-        });
+    expect(getScreen()).toMatchInlineSnapshot(`
+      "? Select a number (Press <space> to select, and <enter> to proceed)
+      ❯◯ 1
+       ◯ 2
+       ◯ 3
+       ◯ 4
+       ◯ 5
+       ◯ 6
+       ◯ 7
+      (Use arrow keys to reveal more choices)"
+    `);
 
-        expect(getScreen()).toMatchInlineSnapshot(`
-          "? Select an option (Press <space> to select, and <enter> to proceed)
-          ❯◯ Option A
-           ◯ Option B
-           ◯ Option C"
-        `);
+    events.keypress('down');
+    events.keypress('space');
+    events.keypress('down');
+    events.keypress('space');
 
-        events.keypress('down');
-        events.keypress('space');
+    expect(getScreen()).toMatchInlineSnapshot(`
+      "? Select a number
+       ◯ 1
+       ◯ 2
+      ❯◉ 3
+       ◯ 4
+       ◯ 5
+       ◯ 6
+       ◯ 7"
+    `);
 
-        expect(getScreen()).toMatchInlineSnapshot(`
-          "? Select an option
-           ◯ Option A
-          ❯◉ Option B
-           ◯ Option C"
-        `);
+    events.keypress('enter');
 
-        events.keypress('enter');
+    await expect(answer).resolves.toEqual(3);
 
-        await expect(answer).resolves.toEqual('Option B');
+    expect(getScreen()).toMatchInlineSnapshot('"✔ Select a number 3"');
+  });
 
-        expect(getScreen()).toMatchInlineSnapshot(`"✔ Select an option Option B"`);
+  it('works with string choices', async () => {
+    const { answer, events, getScreen } = await render(radio, {
+      message: 'Select an option',
+      choices: ['Option A', 'Option B', 'Option C']
     });
 
-    it('does not scroll up beyond first item when not looping', async () => {
-        const { answer, events, getScreen } = await render(radio, {
-            message: 'Select a number',
-            choices: numberedChoices,
-            loop: false,
-        });
+    expect(getScreen()).toMatchInlineSnapshot(`
+      "? Select an option (Press <space> to select, and <enter> to proceed)
+      ❯◯ Option A
+       ◯ Option B
+       ◯ Option C"
+    `);
 
-        expect(getScreen()).toMatchInlineSnapshot(`
-          "? Select a number (Press <space> to select, and <enter> to proceed)
-          ❯◯ 1
-           ◯ 2
-           ◯ 3
-           ◯ 4
-           ◯ 5
-           ◯ 6
-           ◯ 7
-          (Use arrow keys to reveal more choices)"
-        `);
+    events.keypress('down');
+    events.keypress('space');
 
-        events.keypress('up');
-        events.keypress('space');
+    expect(getScreen()).toMatchInlineSnapshot(`
+      "? Select an option
+       ◯ Option A
+      ❯◉ Option B
+       ◯ Option C"
+    `);
 
-        expect(getScreen()).toMatchInlineSnapshot(`
-          "? Select a number
-          ❯◉ 1
-           ◯ 2
-           ◯ 3
-           ◯ 4
-           ◯ 5
-           ◯ 6
-           ◯ 7"
-        `);
+    events.keypress('enter');
 
-        events.keypress('enter');
+    await expect(answer).resolves.toEqual('Option B');
 
-        await expect(answer).resolves.toEqual(1);
+    expect(getScreen()).toMatchInlineSnapshot('"✔ Select an option Option B"');
+  });
 
-        expect(getScreen()).toMatchInlineSnapshot(`"✔ Select a number 1"`);
+  it('does not scroll up beyond first item when not looping', async () => {
+    const { answer, events, getScreen } = await render(radio, {
+      message: 'Select a number',
+      choices: numberedChoices,
+      loop: false
     });
 
-    it('does not scroll up beyond first selectable item when not looping', async () => {
-        const { answer, events, getScreen } = await render(radio, {
-            message: 'Select a number',
-            choices: [new Separator(), ...numberedChoices],
-            loop: false,
-        });
+    expect(getScreen()).toMatchInlineSnapshot(`
+      "? Select a number (Press <space> to select, and <enter> to proceed)
+      ❯◯ 1
+       ◯ 2
+       ◯ 3
+       ◯ 4
+       ◯ 5
+       ◯ 6
+       ◯ 7
+      (Use arrow keys to reveal more choices)"
+    `);
 
-        expect(getScreen()).toMatchInlineSnapshot(`
-          "? Select a number (Press <space> to select, and <enter> to proceed)
-           ──────────────
-          ❯◯ 1
-           ◯ 2
-           ◯ 3
-           ◯ 4
-           ◯ 5
-           ◯ 6
-          (Use arrow keys to reveal more choices)"
-        `);
+    events.keypress('up');
+    events.keypress('space');
 
-        events.keypress('up');
-        events.keypress('space');
+    expect(getScreen()).toMatchInlineSnapshot(`
+      "? Select a number
+      ❯◉ 1
+       ◯ 2
+       ◯ 3
+       ◯ 4
+       ◯ 5
+       ◯ 6
+       ◯ 7"
+    `);
 
-        expect(getScreen()).toMatchInlineSnapshot(`
-          "? Select a number
-           ──────────────
-          ❯◉ 1
-           ◯ 2
-           ◯ 3
-           ◯ 4
-           ◯ 5
-           ◯ 6"
-        `);
+    events.keypress('enter');
 
-        events.keypress('enter');
+    await expect(answer).resolves.toEqual(1);
 
-        await expect(answer).resolves.toEqual(1);
+    expect(getScreen()).toMatchInlineSnapshot('"✔ Select a number 1"');
+  });
 
-        expect(getScreen()).toMatchInlineSnapshot(`"✔ Select a number 1"`);
+  it('does not scroll up beyond first selectable item when not looping', async () => {
+    const { answer, events, getScreen } = await render(radio, {
+      message: 'Select a number',
+      choices: [new Separator(), ...numberedChoices],
+      loop: false
     });
 
+    expect(getScreen()).toMatchInlineSnapshot(`
+      "? Select a number (Press <space> to select, and <enter> to proceed)
+       ──────────────
+      ❯◯ 1
+       ◯ 2
+       ◯ 3
+       ◯ 4
+       ◯ 5
+       ◯ 6
+      (Use arrow keys to reveal more choices)"
+    `);
 
-    it('does not scroll down beyond last option when not looping', async () => {
-        const { answer, events, getScreen } = await render(radio, {
-            message: 'Select a number',
-            choices: numberedChoices,
-            loop: false,
-        });
+    events.keypress('up');
+    events.keypress('space');
 
-        expect(getScreen()).toMatchInlineSnapshot(`
-          "? Select a number (Press <space> to select, and <enter> to proceed)
-          ❯◯ 1
-           ◯ 2
-           ◯ 3
-           ◯ 4
-           ◯ 5
-           ◯ 6
-           ◯ 7
-          (Use arrow keys to reveal more choices)"
-        `);
+    expect(getScreen()).toMatchInlineSnapshot(`
+      "? Select a number
+       ──────────────
+      ❯◉ 1
+       ◯ 2
+       ◯ 3
+       ◯ 4
+       ◯ 5
+       ◯ 6"
+    `);
 
-        numberedChoices.forEach(() => events.keypress('down'));
-        events.keypress('down');
-        events.keypress('space');
+    events.keypress('enter');
 
-        expect(getScreen()).toMatchInlineSnapshot(`
-          "? Select a number
-           ◯ 6
-           ◯ 7
-           ◯ 8
-           ◯ 9
-           ◯ 10
-           ◯ 11
-          ❯◉ 12"
-        `);
+    await expect(answer).resolves.toEqual(1);
 
-        events.keypress('enter');
+    expect(getScreen()).toMatchInlineSnapshot('"✔ Select a number 1"');
+  });
 
-        await expect(answer).resolves.toEqual(12);
 
-        expect(getScreen()).toMatchInlineSnapshot(`"✔ Select a number 12"`);
+  it('does not scroll down beyond last option when not looping', async () => {
+    const { answer, events, getScreen } = await render(radio, {
+      message: 'Select a number',
+      choices: numberedChoices,
+      loop: false
     });
 
-    it('does not scroll down beyond last selectable option when not looping', async () => {
-        const { answer, events, getScreen } = await render(radio, {
-            message: 'Select a number',
-            choices: [...numberedChoices, new Separator()],
-            loop: false,
-        });
+    expect(getScreen()).toMatchInlineSnapshot(`
+      "? Select a number (Press <space> to select, and <enter> to proceed)
+      ❯◯ 1
+       ◯ 2
+       ◯ 3
+       ◯ 4
+       ◯ 5
+       ◯ 6
+       ◯ 7
+      (Use arrow keys to reveal more choices)"
+    `);
 
-        expect(getScreen()).toMatchInlineSnapshot(`
-          "? Select a number (Press <space> to select, and <enter> to proceed)
-          ❯◯ 1
-           ◯ 2
-           ◯ 3
-           ◯ 4
-           ◯ 5
-           ◯ 6
-           ◯ 7
-          (Use arrow keys to reveal more choices)"
-        `);
+    numberedChoices.forEach(() => events.keypress('down'));
+    events.keypress('down');
+    events.keypress('space');
 
-        numberedChoices.forEach(() => events.keypress('down'));
-        events.keypress('down');
-        events.keypress('space');
+    expect(getScreen()).toMatchInlineSnapshot(`
+      "? Select a number
+       ◯ 6
+       ◯ 7
+       ◯ 8
+       ◯ 9
+       ◯ 10
+       ◯ 11
+      ❯◉ 12"
+    `);
 
-        expect(getScreen()).toMatchInlineSnapshot(`
-          "? Select a number
-           ◯ 7
-           ◯ 8
-           ◯ 9
-           ◯ 10
-           ◯ 11
-          ❯◉ 12
-           ──────────────"
-        `);
+    events.keypress('enter');
 
-        events.keypress('enter');
+    await expect(answer).resolves.toEqual(12);
 
-        await expect(answer).resolves.toEqual(12);
+    expect(getScreen()).toMatchInlineSnapshot('"✔ Select a number 12"');
+  });
 
-        expect(getScreen()).toMatchInlineSnapshot(`"✔ Select a number 12"`);
+  it('does not scroll down beyond last selectable option when not looping', async () => {
+    const { answer, events, getScreen } = await render(radio, {
+      message: 'Select a number',
+      choices: [...numberedChoices, new Separator()],
+      loop: false
     });
 
-    it('uses number key to select an option', async () => {
-        const { answer, events, getScreen } = await render(radio, {
-            message: 'Select a number',
-            choices: numberedChoices,
-        });
+    expect(getScreen()).toMatchInlineSnapshot(`
+      "? Select a number (Press <space> to select, and <enter> to proceed)
+      ❯◯ 1
+       ◯ 2
+       ◯ 3
+       ◯ 4
+       ◯ 5
+       ◯ 6
+       ◯ 7
+      (Use arrow keys to reveal more choices)"
+    `);
 
-        events.keypress('4');
+    numberedChoices.forEach(() => events.keypress('down'));
+    events.keypress('down');
+    events.keypress('space');
 
-        expect(getScreen()).toMatchInlineSnapshot(`
-          "? Select a number (Press <space> to select, and <enter> to proceed)
-           ◯ 1
-           ◯ 2
-           ◯ 3
-          ❯◉ 4
-           ◯ 5
-           ◯ 6
-           ◯ 7"
-        `);
+    expect(getScreen()).toMatchInlineSnapshot(`
+      "? Select a number
+       ◯ 7
+       ◯ 8
+       ◯ 9
+       ◯ 10
+       ◯ 11
+      ❯◉ 12
+       ──────────────"
+    `);
 
-        events.keypress('enter');
+    events.keypress('enter');
 
-        await expect(answer).resolves.toEqual(4);
+    await expect(answer).resolves.toEqual(12);
 
-        expect(getScreen()).toMatchInlineSnapshot(`"✔ Select a number 4"`);
+    expect(getScreen()).toMatchInlineSnapshot('"✔ Select a number 12"');
+  });
+
+  it('uses number key to select an option', async () => {
+    const { answer, events, getScreen } = await render(radio, {
+      message: 'Select a number',
+      choices: numberedChoices
     });
 
+    events.keypress('4');
 
-    it('allows setting a smaller page size', async () => {
-        const { answer, events, getScreen } = await render(radio, {
-            message: 'Select a number',
-            choices: numberedChoices,
-            pageSize: 2,
-        });
+    expect(getScreen()).toMatchInlineSnapshot(`
+      "? Select a number (Press <space> to select, and <enter> to proceed)
+       ◯ 1
+       ◯ 2
+       ◯ 3
+      ❯◉ 4
+       ◯ 5
+       ◯ 6
+       ◯ 7"
+    `);
 
-        expect(getScreen()).toMatchInlineSnapshot(`
-          "? Select a number (Press <space> to select, and <enter> to proceed)
-          ❯◯ 1
-           ◯ 2
-          (Use arrow keys to reveal more choices)"
-        `);
+    events.keypress('enter');
 
-        events.keypress('enter');
+    await expect(answer).resolves.toEqual(4);
 
-        await expect(answer).resolves.toEqual(undefined);
+    expect(getScreen()).toMatchInlineSnapshot('"✔ Select a number 4"');
+  });
+
+
+  it('allows setting a smaller page size', async () => {
+    const { answer, events, getScreen } = await render(radio, {
+      message: 'Select a number',
+      choices: numberedChoices,
+      pageSize: 2
     });
 
-    it('allows setting a bigger page size', async () => {
-        const { answer, events, getScreen } = await render(radio, {
-            message: 'Select a number',
-            choices: numberedChoices,
-            pageSize: 10,
-        });
+    expect(getScreen()).toMatchInlineSnapshot(`
+      "? Select a number (Press <space> to select, and <enter> to proceed)
+      ❯◯ 1
+       ◯ 2
+      (Use arrow keys to reveal more choices)"
+    `);
 
-        expect(getScreen()).toMatchInlineSnapshot(`
-          "? Select a number (Press <space> to select, and <enter> to proceed)
-          ❯◯ 1
-           ◯ 2
-           ◯ 3
-           ◯ 4
-           ◯ 5
-           ◯ 6
-           ◯ 7
-           ◯ 8
-           ◯ 9
-           ◯ 10
-          (Use arrow keys to reveal more choices)"
-        `);
+    events.keypress('enter');
 
-        events.keypress('enter');
+    await expect(answer).resolves.toEqual(undefined);
+  });
 
-        await expect(answer).resolves.toEqual(undefined);
+  it('allows setting a bigger page size', async () => {
+    const { answer, events, getScreen } = await render(radio, {
+      message: 'Select a number',
+      choices: numberedChoices,
+      pageSize: 10
     });
 
-    it('cycles through options', async () => {
-        const { answer, events, getScreen } = await render(radio, {
-            message: 'Select a number',
-            choices: numberedChoices,
-            pageSize: 2,
-        });
+    expect(getScreen()).toMatchInlineSnapshot(`
+      "? Select a number (Press <space> to select, and <enter> to proceed)
+      ❯◯ 1
+       ◯ 2
+       ◯ 3
+       ◯ 4
+       ◯ 5
+       ◯ 6
+       ◯ 7
+       ◯ 8
+       ◯ 9
+       ◯ 10
+      (Use arrow keys to reveal more choices)"
+    `);
 
-        expect(getScreen()).toMatchInlineSnapshot(`
-          "? Select a number (Press <space> to select, and <enter> to proceed)
-          ❯◯ 1
-           ◯ 2
-          (Use arrow keys to reveal more choices)"
-        `);
+    events.keypress('enter');
 
-        events.keypress('up');
-        events.keypress('space');
-        events.keypress('up');
-        events.keypress('space');
+    await expect(answer).resolves.toEqual(undefined);
+  });
 
-        expect(getScreen()).toMatchInlineSnapshot(`
-          "? Select a number
-          ❯◉ 11
-           ◯ 12"
-        `);
-
-        events.keypress('enter');
-        await expect(answer).resolves.toEqual(11);
+  it('cycles through options', async () => {
+    const { answer, events, getScreen } = await render(radio, {
+      message: 'Select a number',
+      choices: numberedChoices,
+      pageSize: 2
     });
 
-    it('skips disabled options by arrow keys', async () => {
-        const { answer, events, getScreen } = await render(radio, {
-            message: 'Select a topping',
-            choices: [
-                { name: 'Ham', value: 'ham' },
-                { name: 'Pineapple', value: 'pineapple', disabled: true },
-                { name: 'Pepperoni', value: 'pepperoni' },
-            ],
-        });
+    expect(getScreen()).toMatchInlineSnapshot(`
+      "? Select a number (Press <space> to select, and <enter> to proceed)
+      ❯◯ 1
+       ◯ 2
+      (Use arrow keys to reveal more choices)"
+    `);
 
-        expect(getScreen()).toMatchInlineSnapshot(`
-          "? Select a topping (Press <space> to select, and <enter> to proceed)
-          ❯◯ Ham
-          - Pineapple (disabled)
-           ◯ Pepperoni"
-        `);
+    events.keypress('up');
+    events.keypress('space');
+    events.keypress('up');
+    events.keypress('space');
 
-        events.keypress('down');
-        events.keypress('space');
+    expect(getScreen()).toMatchInlineSnapshot(`
+      "? Select a number
+      ❯◉ 11
+       ◯ 12"
+    `);
 
-        expect(getScreen()).toMatchInlineSnapshot(`
-          "? Select a topping
-           ◯ Ham
-          - Pineapple (disabled)
-          ❯◉ Pepperoni"
-        `);
+    events.keypress('enter');
+    await expect(answer).resolves.toEqual(11);
+  });
 
-        events.keypress('enter');
-
-        await expect(answer).resolves.toEqual('pepperoni');
-
-        expect(getScreen()).toMatchInlineSnapshot(`"✔ Select a topping Pepperoni"`);
+  it('skips disabled options by arrow keys', async () => {
+    const { answer, events, getScreen } = await render(radio, {
+      message: 'Select a topping',
+      choices: [
+        { name: 'Ham', value: 'ham' },
+        { name: 'Pineapple', value: 'pineapple', disabled: true },
+        { name: 'Pepperoni', value: 'pepperoni' }
+      ]
     });
 
-    it('skips disabled options by number key', async () => {
-        const { answer, events, getScreen } = await render(radio, {
-            message: 'Select a topping',
-            choices: [
-                { name: 'Ham', value: 'ham' },
-                { name: 'Pineapple', value: 'pineapple', disabled: true },
-                { name: 'Pepperoni', value: 'pepperoni' },
-            ],
-        });
+    expect(getScreen()).toMatchInlineSnapshot(`
+      "? Select a topping (Press <space> to select, and <enter> to proceed)
+      ❯◯ Ham
+      - Pineapple (disabled)
+       ◯ Pepperoni"
+    `);
 
-        expect(getScreen()).toMatchInlineSnapshot(`
-          "? Select a topping (Press <space> to select, and <enter> to proceed)
-          ❯◯ Ham
-          - Pineapple (disabled)
-           ◯ Pepperoni"
-        `);
+    events.keypress('down');
+    events.keypress('space');
 
-        events.keypress('2');
+    expect(getScreen()).toMatchInlineSnapshot(`
+      "? Select a topping
+       ◯ Ham
+      - Pineapple (disabled)
+      ❯◉ Pepperoni"
+    `);
 
-        expect(getScreen()).toMatchInlineSnapshot(`
-          "? Select a topping (Press <space> to select, and <enter> to proceed)
-          ❯◯ Ham
-          - Pineapple (disabled)
-           ◯ Pepperoni"
-        `);
+    events.keypress('enter');
 
-        events.keypress('enter');
+    await expect(answer).resolves.toEqual('pepperoni');
 
-        await expect(answer).resolves.toEqual(undefined);
+    expect(getScreen()).toMatchInlineSnapshot('"✔ Select a topping Pepperoni"');
+  });
 
-        expect(getScreen()).toMatchInlineSnapshot(`"✔ Select a topping"`);
+  it('skips disabled options by number key', async () => {
+    const { answer, events, getScreen } = await render(radio, {
+      message: 'Select a topping',
+      choices: [
+        { name: 'Ham', value: 'ham' },
+        { name: 'Pineapple', value: 'pineapple', disabled: true },
+        { name: 'Pepperoni', value: 'pepperoni' }
+      ]
     });
 
-    it('skips separator by arrow keys', async () => {
-        const { answer, events, getScreen } = await render(radio, {
-            message: 'Select a topping',
-            choices: [
-                { name: 'Ham', value: 'ham' },
-                new Separator(),
-                { name: 'Pepperoni', value: 'pepperoni' },
-            ],
-        });
+    expect(getScreen()).toMatchInlineSnapshot(`
+      "? Select a topping (Press <space> to select, and <enter> to proceed)
+      ❯◯ Ham
+      - Pineapple (disabled)
+       ◯ Pepperoni"
+    `);
 
-        expect(getScreen()).toMatchInlineSnapshot(`
-          "? Select a topping (Press <space> to select, and <enter> to proceed)
-          ❯◯ Ham
-           ──────────────
-           ◯ Pepperoni"
-        `);
+    events.keypress('2');
 
-        events.keypress('down');
-        events.keypress('space');
+    expect(getScreen()).toMatchInlineSnapshot(`
+      "? Select a topping (Press <space> to select, and <enter> to proceed)
+      ❯◯ Ham
+      - Pineapple (disabled)
+       ◯ Pepperoni"
+    `);
 
-        expect(getScreen()).toMatchInlineSnapshot(`
-          "? Select a topping
-           ◯ Ham
-           ──────────────
-          ❯◉ Pepperoni"
-        `);
+    events.keypress('enter');
 
-        events.keypress('enter');
+    await expect(answer).resolves.toEqual(undefined);
 
-        await expect(answer).resolves.toEqual('pepperoni');
+    expect(getScreen()).toMatchInlineSnapshot('"✔ Select a topping"');
+  });
 
-        expect(getScreen()).toMatchInlineSnapshot(`"✔ Select a topping Pepperoni"`);
+  it('skips separator by arrow keys', async () => {
+    const { answer, events, getScreen } = await render(radio, {
+      message: 'Select a topping',
+      choices: [
+        { name: 'Ham', value: 'ham' },
+        new Separator(),
+        { name: 'Pepperoni', value: 'pepperoni' }
+      ]
     });
 
-    it('skips separator by number key', async () => {
-        const { answer, events, getScreen } = await render(radio, {
-            message: 'Select a topping',
-            choices: [
-                { name: 'Ham', value: 'ham' },
-                new Separator(),
-                { name: 'Pepperoni', value: 'pepperoni' },
-            ],
-        });
+    expect(getScreen()).toMatchInlineSnapshot(`
+      "? Select a topping (Press <space> to select, and <enter> to proceed)
+      ❯◯ Ham
+       ──────────────
+       ◯ Pepperoni"
+    `);
 
-        expect(getScreen()).toMatchInlineSnapshot(`
-          "? Select a topping (Press <space> to select, and <enter> to proceed)
-          ❯◯ Ham
-           ──────────────
-           ◯ Pepperoni"
-        `);
+    events.keypress('down');
+    events.keypress('space');
 
-        events.keypress('2');
+    expect(getScreen()).toMatchInlineSnapshot(`
+      "? Select a topping
+       ◯ Ham
+       ──────────────
+      ❯◉ Pepperoni"
+    `);
 
-        expect(getScreen()).toMatchInlineSnapshot(`
-          "? Select a topping (Press <space> to select, and <enter> to proceed)
-          ❯◯ Ham
-           ──────────────
-           ◯ Pepperoni"
-        `);
+    events.keypress('enter');
 
-        events.keypress('enter');
+    await expect(answer).resolves.toEqual('pepperoni');
 
-        await expect(answer).resolves.toEqual(undefined);
+    expect(getScreen()).toMatchInlineSnapshot('"✔ Select a topping Pepperoni"');
+  });
 
-        expect(getScreen()).toMatchInlineSnapshot(`"✔ Select a topping"`);
+  it('skips separator by number key', async () => {
+    const { answer, events, getScreen } = await render(radio, {
+      message: 'Select a topping',
+      choices: [
+        { name: 'Ham', value: 'ham' },
+        new Separator(),
+        { name: 'Pepperoni', value: 'pepperoni' }
+      ]
     });
 
-    it('allows disabling help tip', async () => {
-        const { answer, events, getScreen } = await render(radio, {
-            message: 'Select a number',
-            choices: numberedChoices,
-            instructions: false,
-        });
+    expect(getScreen()).toMatchInlineSnapshot(`
+      "? Select a topping (Press <space> to select, and <enter> to proceed)
+      ❯◯ Ham
+       ──────────────
+       ◯ Pepperoni"
+    `);
 
-        expect(getScreen()).toMatchInlineSnapshot(`
-          "? Select a number
-          ❯◯ 1
-           ◯ 2
-           ◯ 3
-           ◯ 4
-           ◯ 5
-           ◯ 6
-           ◯ 7"
-        `);
+    events.keypress('2');
 
-        events.keypress('enter');
+    expect(getScreen()).toMatchInlineSnapshot(`
+      "? Select a topping (Press <space> to select, and <enter> to proceed)
+      ❯◯ Ham
+       ──────────────
+       ◯ Pepperoni"
+    `);
 
-        await expect(answer).resolves.toEqual(undefined);
+    events.keypress('enter');
 
-        expect(getScreen()).toMatchInlineSnapshot(`"✔ Select a number"`);
+    await expect(answer).resolves.toEqual(undefined);
+
+    expect(getScreen()).toMatchInlineSnapshot('"✔ Select a topping"');
+  });
+
+  it('allows disabling help tip', async () => {
+    const { answer, events, getScreen } = await render(radio, {
+      message: 'Select a number',
+      choices: numberedChoices,
+      instructions: false
     });
 
-    it('allows customizing help tip', async () => {
-        const { answer, events, getScreen } = await render(radio, {
-            message: 'Select a number',
-            choices: numberedChoices,
-            instructions:
-                ' (Pulse <space> para seleccionar, y <enter> para continuar)',
-        });
+    expect(getScreen()).toMatchInlineSnapshot(`
+      "? Select a number
+      ❯◯ 1
+       ◯ 2
+       ◯ 3
+       ◯ 4
+       ◯ 5
+       ◯ 6
+       ◯ 7"
+    `);
 
-        expect(getScreen()).toMatchInlineSnapshot(`
-          "? Select a number (Pulse <space> para seleccionar, y <enter> para continuar)
-          ❯◯ 1
-           ◯ 2
-           ◯ 3
-           ◯ 4
-           ◯ 5
-           ◯ 6
-           ◯ 7
-          (Use arrow keys to reveal more choices)"
-        `);
+    events.keypress('enter');
 
-        events.keypress('enter');
+    await expect(answer).resolves.toEqual(undefined);
 
-        await expect(answer).resolves.toEqual(undefined);
+    expect(getScreen()).toMatchInlineSnapshot('"✔ Select a number"');
+  });
 
-        expect(getScreen()).toMatchInlineSnapshot(`"✔ Select a number"`);
+  it('allows customizing help tip', async () => {
+    const { answer, events, getScreen } = await render(radio, {
+      message: 'Select a number',
+      choices: numberedChoices,
+      instructions: ' (Pulse <space> para seleccionar, y <enter> para continuar)'
     });
 
-    it('throws if all choices are disabled', async () => {
-        const { answer } = await render(radio, {
-            message: 'Select a number',
-            choices: numberedChoices.map((choice) => ({ ...choice, disabled: true })),
-        });
+    expect(getScreen()).toMatchInlineSnapshot(`
+      "? Select a number (Pulse <space> para seleccionar, y <enter> para continuar)
+      ❯◯ 1
+       ◯ 2
+       ◯ 3
+       ◯ 4
+       ◯ 5
+       ◯ 6
+       ◯ 7
+      (Use arrow keys to reveal more choices)"
+    `);
 
-        await expect(answer).rejects.toThrowErrorMatchingInlineSnapshot(
-            `[ValidationError: [radio prompt] No selectable choices. All choices are disabled.]`
-        );
+    events.keypress('enter');
 
-        await expect(answer).rejects.toBeInstanceOf(ValidationError);
+    await expect(answer).resolves.toEqual(undefined);
+
+    expect(getScreen()).toMatchInlineSnapshot('"✔ Select a number"');
+  });
+
+  it('throws if all choices are disabled', async () => {
+    const { answer } = await render(radio, {
+      message: 'Select a number',
+      choices: numberedChoices.map(choice => ({ ...choice, disabled: true }))
     });
 
-    it('shows validation message if user did not select any choice', async () => {
-        const { answer, events, getScreen } = await render(radio, {
-            message: 'Select a number',
-            choices: numberedChoices,
-            required: true,
-        });
+    await expect(answer).rejects.toThrowErrorMatchingInlineSnapshot(
+      '[ValidationError: [radio prompt] No selectable choices. All choices are disabled.]'
+    );
 
-        events.keypress('enter');
-        await Promise.resolve();
+    await expect(answer).rejects.toBeInstanceOf(ValidationError);
+  });
 
-        expect(getScreen()).toMatchInlineSnapshot(`
-          "? Select a number (Press <space> to select, and <enter> to proceed)
-          ❯◯ 1
-           ◯ 2
-           ◯ 3
-           ◯ 4
-           ◯ 5
-           ◯ 6
-           ◯ 7
-          > One choice must be selected"
-        `);
-
-        events.keypress('space');
-
-        expect(getScreen()).toMatchInlineSnapshot(`
-          "? Select a number
-          ❯◉ 1
-           ◯ 2
-           ◯ 3
-           ◯ 4
-           ◯ 5
-           ◯ 6
-           ◯ 7"
-        `);
-
-        events.keypress('enter');
-
-        await expect(answer).resolves.toEqual(1);
+  it('shows validation message if user did not select any choice', async () => {
+    const { answer, events, getScreen } = await render(radio, {
+      message: 'Select a number',
+      choices: numberedChoices,
+      required: true
     });
 
-    it('shows description of the highlighted choice', async () => {
-        const choices = [
-            { value: 'Stark', description: 'Winter is coming' },
-            { value: 'Lannister', description: 'Hear me roar' },
-            { value: 'Targaryen', description: 'Fire and blood' },
-        ];
+    events.keypress('enter');
+    await Promise.resolve();
 
-        const { answer, events, getScreen } = await render(radio, {
-            message: 'Select a family',
-            choices: choices,
-        });
+    expect(getScreen()).toMatchInlineSnapshot(`
+      "? Select a number (Press <space> to select, and <enter> to proceed)
+      ❯◯ 1
+       ◯ 2
+       ◯ 3
+       ◯ 4
+       ◯ 5
+       ◯ 6
+       ◯ 7
+      > One choice must be selected"
+    `);
 
-        expect(getScreen()).toMatchInlineSnapshot(`
-          "? Select a family (Press <space> to select, and <enter> to proceed)
-          ❯◯ Stark
-           ◯ Lannister
-           ◯ Targaryen
-          Winter is coming"
-        `);
+    events.keypress('space');
 
-        events.keypress('down');
+    expect(getScreen()).toMatchInlineSnapshot(`
+      "? Select a number
+      ❯◉ 1
+       ◯ 2
+       ◯ 3
+       ◯ 4
+       ◯ 5
+       ◯ 6
+       ◯ 7"
+    `);
 
-        expect(getScreen()).toMatchInlineSnapshot(`
-          "? Select a family (Press <space> to select, and <enter> to proceed)
-           ◯ Stark
-          ❯◯ Lannister
-           ◯ Targaryen
-          Hear me roar"
-        `);
+    events.keypress('enter');
 
-        events.keypress('space');
+    await expect(answer).resolves.toEqual(1);
+  });
 
-        expect(getScreen()).toMatchInlineSnapshot(`
-          "? Select a family
-           ◯ Stark
-          ❯◉ Lannister
-           ◯ Targaryen
-          Hear me roar"
-        `);
+  it('shows description of the highlighted choice', async () => {
+    const choices = [
+      { value: 'Stark', description: 'Winter is coming' },
+      { value: 'Lannister', description: 'Hear me roar' },
+      { value: 'Targaryen', description: 'Fire and blood' }
+    ];
 
-        events.keypress('enter');
-
-        await expect(answer).resolves.toEqual('Lannister');
+    const { answer, events, getScreen } = await render(radio, {
+      message: 'Select a family',
+      choices: choices
     });
 
-    it('uses custom validation', async () => {
-        const { answer, events, getScreen } = await render(radio, {
-            message: 'Select a number',
-            choices: numberedChoices,
-            validate: (items: ReadonlyArray<unknown>) => {
-                if (items.length !== 1) {
-                    return 'Please select only one choice';
-                }
-                return true;
-            },
-        });
+    expect(getScreen()).toMatchInlineSnapshot(`
+      "? Select a family (Press <space> to select, and <enter> to proceed)
+      ❯◯ Stark
+       ◯ Lannister
+       ◯ Targaryen
+      Winter is coming"
+    `);
 
-        events.keypress('enter');
-        await Promise.resolve();
+    events.keypress('down');
 
-        expect(getScreen()).toMatchInlineSnapshot(`
-          "? Select a number (Press <space> to select, and <enter> to proceed)
-          ❯◯ 1
-           ◯ 2
-           ◯ 3
-           ◯ 4
-           ◯ 5
-           ◯ 6
-           ◯ 7
-          > Please select only one choice"
-        `);
+    expect(getScreen()).toMatchInlineSnapshot(`
+      "? Select a family (Press <space> to select, and <enter> to proceed)
+       ◯ Stark
+      ❯◯ Lannister
+       ◯ Targaryen
+      Hear me roar"
+    `);
 
-        events.keypress('space');
-        events.keypress('enter');
+    events.keypress('space');
 
-        await expect(answer).resolves.toEqual(1);
+    expect(getScreen()).toMatchInlineSnapshot(`
+      "? Select a family
+       ◯ Stark
+      ❯◉ Lannister
+       ◯ Targaryen
+      Hear me roar"
+    `);
+
+    events.keypress('enter');
+
+    await expect(answer).resolves.toEqual('Lannister');
+  });
+
+  it('uses custom validation', async () => {
+    const { answer, events, getScreen } = await render(radio, {
+      message: 'Select a number',
+      choices: numberedChoices,
+      validate: (items: ReadonlyArray<unknown>) => {
+        if (items.length !== 1) {
+          return 'Please select only one choice';
+        }
+        return true;
+      }
     });
 
-    describe('theme: icon', () => {
-        it('displays checked/unchecked', async () => {
-            const {answer, events, getScreen} = await render(radio, {
-                message: 'Select a number',
-                choices: numberedChoices,
-                theme: {
-                    icon: {
-                        checked: '√',
-                        unchecked: 'x',
-                    },
-                },
-            });
-            events.keypress('space');
+    events.keypress('enter');
+    await Promise.resolve();
 
-            expect(getScreen()).toMatchInlineSnapshot(`
-              "? Select a number
-              ❯√ 1
-               x 2
-               x 3
-               x 4
-               x 5
-               x 6
-               x 7"
-            `);
+    expect(getScreen()).toMatchInlineSnapshot(`
+      "? Select a number (Press <space> to select, and <enter> to proceed)
+      ❯◯ 1
+       ◯ 2
+       ◯ 3
+       ◯ 4
+       ◯ 5
+       ◯ 6
+       ◯ 7
+      > Please select only one choice"
+    `);
 
-            events.keypress('enter');
-            await answer;
-        });
+    events.keypress('space');
+    events.keypress('enter');
 
-        it('displays a cursor', async () => {
-            const { answer, events, getScreen } = await render(radio, {
-                message: 'Select a number',
-                choices: numberedChoices,
-                theme: {
-                    icon: {
-                        cursor: '>',
-                    },
-                },
-            });
-            events.keypress('space');
+    await expect(answer).resolves.toEqual(1);
+  });
 
-            expect(getScreen()).toMatchInlineSnapshot(`
-              "? Select a number
-              >◉ 1
-               ◯ 2
-               ◯ 3
-               ◯ 4
-               ◯ 5
-               ◯ 6
-               ◯ 7"
-            `);
+  describe('theme: icon', () => {
+    it('displays checked/unchecked', async () => {
+      const { answer, events, getScreen } = await render(radio, {
+        message: 'Select a number',
+        choices: numberedChoices,
+        theme: {
+          icon: {
+            checked: '√',
+            unchecked: 'x'
+          }
+        }
+      });
+      events.keypress('space');
 
-            events.keypress('enter');
-            await answer;
-        });
+      expect(getScreen()).toMatchInlineSnapshot(`
+        "? Select a number
+        ❯√ 1
+         x 2
+         x 3
+         x 4
+         x 5
+         x 6
+         x 7"
+      `);
+
+      events.keypress('enter');
+      await answer;
     });
 
-    describe('theme: style.renderSelectedChoices', () => {
-        it('calls renderSelectedChoices', async () => {
-            const {answer, events, getScreen} = await render(radio, {
-                message: 'Select your favourite number.',
-                choices: numberedChoices,
-                theme: {
-                    style: {
-                        renderSelectedChoices: (selected: { value: number }[]) => {
-                            if (selected.length > 1) {
-                                return `You have selected ${(selected[0] as {
-                                    value: number
-                                }).value} and ${selected.length - 1} more.`;
-                            }
-                            return `You have selected ${selected
-                                .slice(0, 1)
-                                .map((c) => c.value)
-                                .join(', ')}.`;
-                        },
-                    },
-                },
-            });
+    it('displays a cursor', async () => {
+      const { answer, events, getScreen } = await render(radio, {
+        message: 'Select a number',
+        choices: numberedChoices,
+        theme: {
+          icon: {
+            cursor: '>'
+          }
+        }
+      });
+      events.keypress('space');
 
-            events.keypress('space');
-            events.keypress('down');
-            events.keypress('space');
-            events.keypress('down');
-            events.keypress('space');
-            events.keypress('enter');
+      expect(getScreen()).toMatchInlineSnapshot(`
+        "? Select a number
+        >◉ 1
+         ◯ 2
+         ◯ 3
+         ◯ 4
+         ◯ 5
+         ◯ 6
+         ◯ 7"
+      `);
 
-            await answer;
+      events.keypress('enter');
+      await answer;
+    });
+  });
 
-            expect(getScreen()).toMatchInlineSnapshot(`"✔ Select your favourite number. You have selected 3."`);
-        });
+  describe('theme: style.renderSelectedChoices', () => {
+    it('calls renderSelectedChoices', async () => {
+      const { answer, events, getScreen } = await render(radio, {
+        message: 'Select your favourite number.',
+        choices: numberedChoices,
+        theme: {
+          style: {
+            renderSelectedChoices: (selected: { value: number }[]) => {
+              if (selected.length > 1) {
+                return `You have selected ${(selected[0] as {
+                  value: number
+                }).value} and ${selected.length - 1} more.`;
+              }
+              return `You have selected ${selected
+                .slice(0, 1)
+                .map(c => c.value)
+                .join(', ')}.`;
+            }
+          }
+        }
+      });
 
-        it('allows customizing short names after selection', async () => {
-            const { answer, events, getScreen } = await render(radio, {
-                message: 'Select a commit',
-                choices: [
-                    {
-                        name: '2cc9e311 (HEAD -> main) Fix(inquirer): Ensure no mutation of the question',
-                        value: '2cc9e311',
-                        short: '2cc9e311',
-                    },
-                    {
-                        name: '3272b94a (origin/main) Fix(inquirer): Fix close method not required',
-                        value: '3272b94a',
-                        short: '3272b94a',
-                    },
-                    {
-                        name: 'e4e10545 Chore(dev-deps): Bump dev-deps',
-                        value: 'e4e10545',
-                        short: 'e4e10545',
-                    },
-                ],
-            });
+      events.keypress('space');
+      events.keypress('down');
+      events.keypress('space');
+      events.keypress('down');
+      events.keypress('space');
+      events.keypress('enter');
 
-            expect(getScreen()).toMatchInlineSnapshot(`
-              "? Select a commit (Press <space> to select, and <enter> to proceed)
-              ❯◯ 2cc9e311 (HEAD -> main) Fix(inquirer): Ensure no mutation of the question
-               ◯ 3272b94a (origin/main) Fix(inquirer): Fix close method not required
-               ◯ e4e10545 Chore(dev-deps): Bump dev-deps"
-            `);
+      await answer;
 
-            events.keypress('space');
-            events.keypress('down');
-            events.keypress('space');
-
-            expect(getScreen()).toMatchInlineSnapshot(`
-              "? Select a commit
-               ◯ 2cc9e311 (HEAD -> main) Fix(inquirer): Ensure no mutation of the question
-              ❯◉ 3272b94a (origin/main) Fix(inquirer): Fix close method not required
-               ◯ e4e10545 Chore(dev-deps): Bump dev-deps"
-            `);
-
-            events.keypress('enter');
-
-            await expect(answer).resolves.toEqual('3272b94a');
-            expect(getScreen()).toMatchInlineSnapshot(`"✔ Select a commit 3272b94a"`);
-        });
-
-        it('uses allChoices parameter', async () => {
-            const { answer, events, getScreen } = await render(radio, {
-                message: 'Select your favourite number.',
-                choices: numberedChoices,
-                theme: {
-                    style: {
-                        renderSelectedChoices: (
-                            selected: { value: number }[],
-                            all: ({ value: number } | Separator)[],
-                        ) => {
-                            return `You have selected ${selected.length} out of ${all.length} options.`;
-                        },
-                    },
-                },
-            });
-
-            events.keypress('space');
-            events.keypress('down');
-            events.keypress('down');
-            events.keypress('space');
-            events.keypress('enter');
-
-            await answer;
-
-            expect(getScreen()).toMatchInlineSnapshot(
-                `"✔ Select your favourite number. You have selected 1 out of 12 options."`
-            );
-        });
+      expect(getScreen()).toMatchInlineSnapshot('"✔ Select your favourite number. You have selected 3."');
     });
 
-    describe('theme: helpMode', () => {
-        const scrollTip = '(Use arrow keys to reveal more choices)';
-        const selectTip = 'Press <space> to select';
+    it('allows customizing short names after selection', async () => {
+      const { answer, events, getScreen } = await render(radio, {
+        message: 'Select a commit',
+        choices: [
+          {
+            name: '2cc9e311 (HEAD -> main) Fix(inquirer): Ensure no mutation of the question',
+            value: '2cc9e311',
+            short: '2cc9e311'
+          },
+          {
+            name: '3272b94a (origin/main) Fix(inquirer): Fix close method not required',
+            value: '3272b94a',
+            short: '3272b94a'
+          },
+          {
+            name: 'e4e10545 Chore(dev-deps): Bump dev-deps',
+            value: 'e4e10545',
+            short: 'e4e10545'
+          }
+        ]
+      });
 
-        it('uses helpMode: auto', async () => {
-            const {answer, events, getScreen} = await render(radio, {
-                message: 'Select a number',
-                choices: numberedChoices,
-                theme: { helpMode: 'auto' },
-            });
+      expect(getScreen()).toMatchInlineSnapshot(`
+        "? Select a commit (Press <space> to select, and <enter> to proceed)
+        ❯◯ 2cc9e311 (HEAD -> main) Fix(inquirer): Ensure no mutation of the question
+         ◯ 3272b94a (origin/main) Fix(inquirer): Fix close method not required
+         ◯ e4e10545 Chore(dev-deps): Bump dev-deps"
+      `);
 
-            expect(getScreen()).toMatchInlineSnapshot(`
-              "? Select a number (Press <space> to select, and <enter> to proceed)
-              ❯◯ 1
-               ◯ 2
-               ◯ 3
-               ◯ 4
-               ◯ 5
-               ◯ 6
-               ◯ 7
-              (Use arrow keys to reveal more choices)"
-            `);
+      events.keypress('space');
+      events.keypress('down');
+      events.keypress('space');
 
-            expect(getScreen()).toContain(scrollTip);
+      expect(getScreen()).toMatchInlineSnapshot(`
+        "? Select a commit
+         ◯ 2cc9e311 (HEAD -> main) Fix(inquirer): Ensure no mutation of the question
+        ❯◉ 3272b94a (origin/main) Fix(inquirer): Fix close method not required
+         ◯ e4e10545 Chore(dev-deps): Bump dev-deps"
+      `);
 
-            expect(getScreen()).toContain(selectTip);
+      events.keypress('enter');
 
-            events.keypress('down');
-
-            expect(getScreen()).toMatchInlineSnapshot(`
-              "? Select a number (Press <space> to select, and <enter> to proceed)
-               ◯ 1
-              ❯◯ 2
-               ◯ 3
-               ◯ 4
-               ◯ 5
-               ◯ 6
-               ◯ 7"
-            `);
-
-            expect(getScreen()).not.toContain(scrollTip);
-
-            expect(getScreen()).toContain(selectTip);
-
-            events.keypress('space');
-
-            expect(getScreen()).toMatchInlineSnapshot(`
-              "? Select a number
-               ◯ 1
-              ❯◉ 2
-               ◯ 3
-               ◯ 4
-               ◯ 5
-               ◯ 6
-               ◯ 7"
-            `);
-
-            expect(getScreen()).not.toContain(scrollTip);
-
-            expect(getScreen()).not.toContain(selectTip);
-
-            events.keypress('enter');
-
-            await expect(answer).resolves.toEqual(2);
-
-            expect(getScreen()).toMatchInlineSnapshot(`"✔ Select a number 2"`);
-        });
-
-        it('uses helpMode: always', async () => {
-            const { answer, events, getScreen } = await render(radio, {
-                message: 'Select a number',
-                choices: numberedChoices,
-                theme: { helpMode: 'always' },
-            });
-
-            expect(getScreen()).toMatchInlineSnapshot(`
-              "? Select a number (Press <space> to select, and <enter> to proceed)
-              ❯◯ 1
-               ◯ 2
-               ◯ 3
-               ◯ 4
-               ◯ 5
-               ◯ 6
-               ◯ 7
-              (Use arrow keys to reveal more choices)"
-            `);
-
-            expect(getScreen()).toContain(scrollTip);
-
-            expect(getScreen()).toContain(selectTip);
-
-            events.keypress('down');
-
-            expect(getScreen()).toMatchInlineSnapshot(`
-              "? Select a number (Press <space> to select, and <enter> to proceed)
-               ◯ 1
-              ❯◯ 2
-               ◯ 3
-               ◯ 4
-               ◯ 5
-               ◯ 6
-               ◯ 7
-              (Use arrow keys to reveal more choices)"
-            `);
-
-            expect(getScreen()).toContain(scrollTip);
-
-            expect(getScreen()).toContain(selectTip);
-
-            events.keypress('space');
-
-            expect(getScreen()).toMatchInlineSnapshot(`
-              "? Select a number (Press <space> to select, and <enter> to proceed)
-               ◯ 1
-              ❯◉ 2
-               ◯ 3
-               ◯ 4
-               ◯ 5
-               ◯ 6
-               ◯ 7
-              (Use arrow keys to reveal more choices)"
-            `);
-
-            expect(getScreen()).toContain(scrollTip);
-
-            expect(getScreen()).toContain(selectTip);
-
-            events.keypress('enter');
-
-            await expect(answer).resolves.toEqual(2);
-
-            expect(getScreen()).toMatchInlineSnapshot(`"✔ Select a number 2"`);
-        });
-
-        it('uses helpMode: never', async () => {
-            const { answer, events, getScreen } = await render(radio, {
-                message: 'Select a number',
-                choices: numberedChoices,
-                theme: { helpMode: 'never' },
-            });
-
-            expect(getScreen()).toMatchInlineSnapshot(`
-              "? Select a number
-              ❯◯ 1
-               ◯ 2
-               ◯ 3
-               ◯ 4
-               ◯ 5
-               ◯ 6
-               ◯ 7"
-            `);
-
-            expect(getScreen()).not.toContain(scrollTip);
-
-            expect(getScreen()).not.toContain(selectTip);
-
-            events.keypress('down');
-
-            expect(getScreen()).toMatchInlineSnapshot(`
-              "? Select a number
-               ◯ 1
-              ❯◯ 2
-               ◯ 3
-               ◯ 4
-               ◯ 5
-               ◯ 6
-               ◯ 7"
-            `);
-
-            expect(getScreen()).not.toContain(scrollTip);
-
-            expect(getScreen()).not.toContain(selectTip);
-
-            events.keypress('space');
-
-            expect(getScreen()).toMatchInlineSnapshot(`
-              "? Select a number
-               ◯ 1
-              ❯◉ 2
-               ◯ 3
-               ◯ 4
-               ◯ 5
-               ◯ 6
-               ◯ 7"
-            `);
-
-            expect(getScreen()).not.toContain(scrollTip);
-
-            expect(getScreen()).not.toContain(selectTip);
-
-            events.keypress('enter');
-
-            await expect(answer).resolves.toEqual(2);
-
-            expect(getScreen()).toMatchInlineSnapshot(`"✔ Select a number 2"`);
-        });
+      await expect(answer).resolves.toEqual('3272b94a');
+      expect(getScreen()).toMatchInlineSnapshot('"✔ Select a commit 3272b94a"');
     });
+
+    it('uses allChoices parameter', async () => {
+      const { answer, events, getScreen } = await render(radio, {
+        message: 'Select your favourite number.',
+        choices: numberedChoices,
+        theme: {
+          style: {
+            renderSelectedChoices: (
+              selected: { value: number }[],
+              all: ({ value: number } | Separator)[]
+            ) => {
+              return `You have selected ${selected.length} out of ${all.length} options.`;
+            }
+          }
+        }
+      });
+
+      events.keypress('space');
+      events.keypress('down');
+      events.keypress('down');
+      events.keypress('space');
+      events.keypress('enter');
+
+      await answer;
+
+      expect(getScreen()).toMatchInlineSnapshot(
+        '"✔ Select your favourite number. You have selected 1 out of 12 options."'
+      );
+    });
+  });
+
+  describe('theme: helpMode', () => {
+    const scrollTip = '(Use arrow keys to reveal more choices)';
+    const selectTip = 'Press <space> to select';
+
+    it('uses helpMode: auto', async () => {
+      const { answer, events, getScreen } = await render(radio, {
+        message: 'Select a number',
+        choices: numberedChoices,
+        theme: { helpMode: 'auto' }
+      });
+
+      expect(getScreen()).toMatchInlineSnapshot(`
+        "? Select a number (Press <space> to select, and <enter> to proceed)
+        ❯◯ 1
+         ◯ 2
+         ◯ 3
+         ◯ 4
+         ◯ 5
+         ◯ 6
+         ◯ 7
+        (Use arrow keys to reveal more choices)"
+      `);
+
+      expect(getScreen()).toContain(scrollTip);
+
+      expect(getScreen()).toContain(selectTip);
+
+      events.keypress('down');
+
+      expect(getScreen()).toMatchInlineSnapshot(`
+        "? Select a number (Press <space> to select, and <enter> to proceed)
+         ◯ 1
+        ❯◯ 2
+         ◯ 3
+         ◯ 4
+         ◯ 5
+         ◯ 6
+         ◯ 7"
+      `);
+
+      expect(getScreen()).not.toContain(scrollTip);
+
+      expect(getScreen()).toContain(selectTip);
+
+      events.keypress('space');
+
+      expect(getScreen()).toMatchInlineSnapshot(`
+        "? Select a number
+         ◯ 1
+        ❯◉ 2
+         ◯ 3
+         ◯ 4
+         ◯ 5
+         ◯ 6
+         ◯ 7"
+      `);
+
+      expect(getScreen()).not.toContain(scrollTip);
+
+      expect(getScreen()).not.toContain(selectTip);
+
+      events.keypress('enter');
+
+      await expect(answer).resolves.toEqual(2);
+
+      expect(getScreen()).toMatchInlineSnapshot('"✔ Select a number 2"');
+    });
+
+    it('uses helpMode: always', async () => {
+      const { answer, events, getScreen } = await render(radio, {
+        message: 'Select a number',
+        choices: numberedChoices,
+        theme: { helpMode: 'always' }
+      });
+
+      expect(getScreen()).toMatchInlineSnapshot(`
+        "? Select a number (Press <space> to select, and <enter> to proceed)
+        ❯◯ 1
+         ◯ 2
+         ◯ 3
+         ◯ 4
+         ◯ 5
+         ◯ 6
+         ◯ 7
+        (Use arrow keys to reveal more choices)"
+      `);
+
+      expect(getScreen()).toContain(scrollTip);
+
+      expect(getScreen()).toContain(selectTip);
+
+      events.keypress('down');
+
+      expect(getScreen()).toMatchInlineSnapshot(`
+        "? Select a number (Press <space> to select, and <enter> to proceed)
+         ◯ 1
+        ❯◯ 2
+         ◯ 3
+         ◯ 4
+         ◯ 5
+         ◯ 6
+         ◯ 7
+        (Use arrow keys to reveal more choices)"
+      `);
+
+      expect(getScreen()).toContain(scrollTip);
+
+      expect(getScreen()).toContain(selectTip);
+
+      events.keypress('space');
+
+      expect(getScreen()).toMatchInlineSnapshot(`
+        "? Select a number (Press <space> to select, and <enter> to proceed)
+         ◯ 1
+        ❯◉ 2
+         ◯ 3
+         ◯ 4
+         ◯ 5
+         ◯ 6
+         ◯ 7
+        (Use arrow keys to reveal more choices)"
+      `);
+
+      expect(getScreen()).toContain(scrollTip);
+
+      expect(getScreen()).toContain(selectTip);
+
+      events.keypress('enter');
+
+      await expect(answer).resolves.toEqual(2);
+
+      expect(getScreen()).toMatchInlineSnapshot('"✔ Select a number 2"');
+    });
+
+    it('uses helpMode: never', async () => {
+      const { answer, events, getScreen } = await render(radio, {
+        message: 'Select a number',
+        choices: numberedChoices,
+        theme: { helpMode: 'never' }
+      });
+
+      expect(getScreen()).toMatchInlineSnapshot(`
+        "? Select a number
+        ❯◯ 1
+         ◯ 2
+         ◯ 3
+         ◯ 4
+         ◯ 5
+         ◯ 6
+         ◯ 7"
+      `);
+
+      expect(getScreen()).not.toContain(scrollTip);
+
+      expect(getScreen()).not.toContain(selectTip);
+
+      events.keypress('down');
+
+      expect(getScreen()).toMatchInlineSnapshot(`
+        "? Select a number
+         ◯ 1
+        ❯◯ 2
+         ◯ 3
+         ◯ 4
+         ◯ 5
+         ◯ 6
+         ◯ 7"
+      `);
+
+      expect(getScreen()).not.toContain(scrollTip);
+
+      expect(getScreen()).not.toContain(selectTip);
+
+      events.keypress('space');
+
+      expect(getScreen()).toMatchInlineSnapshot(`
+        "? Select a number
+         ◯ 1
+        ❯◉ 2
+         ◯ 3
+         ◯ 4
+         ◯ 5
+         ◯ 6
+         ◯ 7"
+      `);
+
+      expect(getScreen()).not.toContain(scrollTip);
+
+      expect(getScreen()).not.toContain(selectTip);
+
+      events.keypress('enter');
+
+      await expect(answer).resolves.toEqual(2);
+
+      expect(getScreen()).toMatchInlineSnapshot('"✔ Select a number 2"');
+    });
+  });
 });
