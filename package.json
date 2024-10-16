@@ -15,8 +15,7 @@
     "stdout",
     "terminal",
     "tty",
-    "tui",
-    "ui"
+    "tui"
   ],
   "homepage": "https://github.com/jbenner-radham/inquirer-radio-prompt#readme",
   "bugs": {
