@@ -32,6 +32,9 @@
       "types": "./dist/index.d.ts"
     }
   },
+  "directories": {
+    "example": "example"
+  },
   "files": [
     "dist"
   ],
@@ -39,6 +42,7 @@
     "prebuild": "npm run clean",
     "build": "tsc",
     "clean": "rimraf dist",
+    "demo": "agg demo.cast images/demo.gif",
     "lint": "eslint .",
     "lint:fix": "yarn lint --fix",
     "prepare": "husky",

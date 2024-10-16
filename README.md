@@ -7,7 +7,7 @@ inquirer-radio-prompt
 
 An [Inquirer](https://github.com/SBoudrias/Inquirer.js/) radio button prompt based off of [@inquirer/checkbox](https://github.com/SBoudrias/Inquirer.js/tree/main/packages/checkbox).
 
-![Inquirer Radio Prompt](images/inquirer-radio-prompt-example.png)
+![Animated demo of inquirer-radio-prompt](images/demo.gif)
 
 Install
 -------
@@ -18,15 +18,30 @@ npm install inquirer-radio-prompt
 Usage
 -----
 ```js
+import radio from 'inquirer-radio-prompt';
+
+const answer = await radio({
+  message: 'Select a package manager',
+  choices: [
+    { name: 'npm', value: 'npm' },
+    { name: 'pnpm', value: 'pnpm' },
+    { name: 'Yarn', value: 'yarn' }
+  ]
+});
+```
+
+Or using a separator:
+
+```js
 import radio, { Separator } from 'inquirer-radio-prompt';
 
 const answer = await radio({
   message: 'Select a package manager',
   choices: [
     { name: 'npm', value: 'npm' },
-    { name: 'Yarn', value: 'yarn' },
     new Separator(),
-    { name: 'pnpm', value: 'pnpm' }
+    { name: 'pnpm', value: 'pnpm' },
+    { name: 'Yarn', value: 'yarn' }
   ]
 });
 ```

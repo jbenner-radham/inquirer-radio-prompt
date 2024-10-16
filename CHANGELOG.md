@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 [Unreleased]
 ------------
+### Added
+- An animated GIF to demo the library in the readme.
+
 ### Changed
 - Some formatting in `README.md`.
 
