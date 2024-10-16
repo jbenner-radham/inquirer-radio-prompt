@@ -18,6 +18,10 @@
     "tui",
     "ui"
   ],
+  "homepage": "https://github.com/jbenner-radham/inquirer-radio-prompt#readme",
+  "bugs": {
+    "url": "https://github.com/jbenner-radham/inquirer-radio-prompt/issues"
+  },
   "repository": "github:jbenner-radham/inquirer-radio-prompt",
   "license": "MIT",
   "author": "James Benner <james.benner@gmail.com> (https://www.jamesbenner.com/)",
