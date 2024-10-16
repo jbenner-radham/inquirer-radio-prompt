@@ -35,7 +35,9 @@
     "example": "example"
   },
   "files": [
-    "dist"
+    "dist",
+    "example",
+    "images"
   ],
   "scripts": {
     "prebuild": "npm run clean",
