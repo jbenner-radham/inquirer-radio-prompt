@@ -93,6 +93,58 @@ describe('radio prompt', () => {
     expect(getScreen()).toMatchInlineSnapshot('"✔ Select an option Option B"');
   });
 
+  it('allows you to deselect an item', async () => {
+    const { answer, events, getScreen } = await render(radio, {
+      message: 'Select a number',
+      choices: numberedChoices,
+      deselectable: true
+    });
+
+    expect(getScreen()).toMatchInlineSnapshot(`
+      "? Select a number (Press <space> to select, and <enter> to proceed)
+      ❯◯ 1
+       ◯ 2
+       ◯ 3
+       ◯ 4
+       ◯ 5
+       ◯ 6
+       ◯ 7
+      (Use arrow keys to reveal more choices)"
+    `);
+
+    events.keypress('space');
+
+    expect(getScreen()).toMatchInlineSnapshot(`
+      "? Select a number
+      ❯◉ 1
+       ◯ 2
+       ◯ 3
+       ◯ 4
+       ◯ 5
+       ◯ 6
+       ◯ 7"
+    `);
+
+    events.keypress('space');
+
+    expect(getScreen()).toMatchInlineSnapshot(`
+      "? Select a number
+      ❯◯ 1
+       ◯ 2
+       ◯ 3
+       ◯ 4
+       ◯ 5
+       ◯ 6
+       ◯ 7"
+    `);
+
+    events.keypress('enter');
+
+    await expect(answer).resolves.toEqual(undefined);
+
+    expect(getScreen()).toMatchInlineSnapshot('"✔ Select a number"');
+  });
+
   it('does not scroll up beyond first item when not looping', async () => {
     const { answer, events, getScreen } = await render(radio, {
       message: 'Select a number',

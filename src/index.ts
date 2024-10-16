@@ -95,6 +95,7 @@ type CheckboxConfig<
   ) => boolean | string | Promise<string | boolean>;
   theme?: PartialDeep<Theme<CheckboxTheme>>;
   default?: Value;
+  deselectable?: boolean;
 };
 
 type Item<Value> = NormalizedChoice<Value> | Separator;
@@ -151,7 +152,8 @@ export default createPrompt(
       pageSize = 7,
       loop = true,
       required,
-      validate = () => true
+      validate = () => true,
+      deselectable = false
     } = config;
     const theme = makeTheme<CheckboxTheme>(checkboxTheme, config.theme);
     const firstRender = useRef(true);
@@ -219,14 +221,26 @@ export default createPrompt(
       } else if (isSpaceKey(key)) {
         setError(undefined);
         setShowHelpTip(false);
-        setItems(items.map((choice, i) => (i === active ? check(choice) : uncheck(choice))));
+        setItems(
+          items.map((choice, index) =>
+            index === active && !(isSelectable(choice) && choice.checked && deselectable)
+              ? check(choice)
+              : uncheck(choice)
+          )
+        );
       } else if (isNumberKey(key)) {
         // Adjust index to start at 1
         const position = Number(key.name) - 1;
         const item = items[position];
         if (item != null && isSelectable(item)) {
           setActive(position);
-          setItems(items.map((choice, i) => (i === position ? check(choice) : uncheck(choice))));
+          setItems(
+            items.map((choice, index) =>
+              index === position && !(isSelectable(choice) && choice.checked && deselectable)
+                ? check(choice)
+                : uncheck(choice)
+            )
+          );
         }
       }
     });

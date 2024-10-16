@@ -8,7 +8,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [Unreleased]
 ------------
 ### Added
-- An animated GIF to demo the library in the readme.
+- An animated GIF to demo the library in `README.md`.
+- A `deselectable` configuration property. It defaults to `false`. When set to `true`, a selected radio button can be deselected.
 
 ### Changed
 - Some formatting in `README.md`.
