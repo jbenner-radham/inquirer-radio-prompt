@@ -1,4 +1,4 @@
-import radio from '../src/index.js';
+import radio from 'inquirer-radio-prompt';
 
 const answer = await radio({
   message: 'Select a package manager',
