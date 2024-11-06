@@ -26,9 +26,13 @@
   "author": "James Benner <james.benner@gmail.com> (https://www.jamesbenner.com/)",
   "type": "module",
   "exports": {
-    ".": {
-      "import": "./dist/index.js",
-      "types": "./dist/index.d.ts"
+    "require": {
+      "types": "./dist/cjs/index.d.ts",
+      "default": "./dist/cjs/index.js"
+    },
+    "import": {
+      "types": "./dist/esm/index.d.ts",
+      "default": "./dist/esm/index.js"
     }
   },
   "directories": {
@@ -41,11 +45,19 @@
   ],
   "scripts": {
     "prebuild": "npm run clean",
-    "build": "tsc",
+    "build": "npm run build:cjs; npm run build:esm",
+    "build:cjs": "npm run build:cjs:js; npm run build:cjs:package; npm run build:cjs:types",
+    "build:cjs:js": "esbuild src/index.ts --bundle --format=cjs --outfile=dist/cjs/index.js --platform=node --sourcemap",
+    "build:cjs:package": "echo '{\"type\": \"commonjs\"}' > dist/cjs/package.json",
+    "build:cjs:types": "tsc --declaration --declarationMap --emitDeclarationOnly --outDir dist/cjs",
+    "build:esm": "npm run build:esm:js; npm run build:esm:package; npm run build:esm:types",
+    "build:esm:js": "esbuild src/index.ts --bundle --format=esm --outfile=dist/esm/index.js --platform=node --sourcemap",
+    "build:esm:package": "echo '{\"type\": \"module\"}' > dist/esm/package.json",
+    "build:esm:types": "tsc --declaration --declarationMap --emitDeclarationOnly --outDir dist/esm",
     "clean": "rimraf dist",
     "demo": "agg demo.cast images/demo.gif",
     "lint": "eslint .",
-    "lint:fix": "yarn lint --fix",
+    "lint:fix": "npm run lint --fix",
     "prepare": "husky",
     "prepublishOnly": "npm run build",
     "test": "vitest --watch=false",
@@ -63,6 +75,7 @@
     "@eslint/js": "^9.12.0",
     "@inquirer/testing": "^2.1.35",
     "@stylistic/eslint-plugin": "^2.9.0",
+    "esbuild": "0.24.0",
     "eslint": "^9.12.0",
     "globals": "^15.10.0",
     "husky": "^9.1.6",
