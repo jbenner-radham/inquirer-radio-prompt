@@ -17,6 +17,8 @@ npm install inquirer-radio-prompt
 
 Usage
 -----
+**NOTE**: This library exports both [CJS](https://nodejs.org/api/modules.html) and [ESM](https://nodejs.org/api/esm.html) modules. However, the CJS module is larger in file size because all of its dependencies have to be converted to CJS and included in the module bundle.
+
 ```js
 import radio from 'inquirer-radio-prompt';
 
