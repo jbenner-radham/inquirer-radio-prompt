@@ -25,7 +25,7 @@ import colors from 'yoctocolors';
 import figures from '@inquirer/figures';
 import ansiEscapes from 'ansi-escapes';
 
-type CheckboxTheme = {
+type RadioTheme = {
   icon: {
     checked: string;
     unchecked: string;
@@ -42,7 +42,7 @@ type CheckboxTheme = {
   helpMode: 'always' | 'never' | 'auto';
 };
 
-const checkboxTheme: CheckboxTheme = {
+const radioTheme: RadioTheme = {
   icon: {
     checked: colors.green(figures.circleFilled),
     unchecked: figures.circle,
@@ -75,7 +75,7 @@ type NormalizedChoice<Value> = {
   checked: boolean;
 };
 
-type CheckboxConfig<
+type RadioConfig<
   Value,
   ChoicesObject =
     | ReadonlyArray<string | Separator>
@@ -93,7 +93,7 @@ type CheckboxConfig<
   validate?: (
     choices: ReadonlyArray<Choice<Value>>,
   ) => boolean | string | Promise<string | boolean>;
-  theme?: PartialDeep<Theme<CheckboxTheme>>;
+  theme?: PartialDeep<Theme<RadioTheme>>;
   default?: Value;
   deselectable?: boolean;
 };
@@ -146,7 +146,7 @@ function normalizeChoices<Value>(
 }
 
 export default createPrompt(
-  <Value>(config: CheckboxConfig<Value>, done: (value: Value | undefined) => void) => {
+  <Value>(config: RadioConfig<Value>, done: (value: Value | undefined) => void) => {
     const {
       instructions,
       pageSize = 7,
@@ -155,7 +155,7 @@ export default createPrompt(
       validate = () => true,
       deselectable = false
     } = config;
-    const theme = makeTheme<CheckboxTheme>(checkboxTheme, config.theme);
+    const theme = makeTheme<RadioTheme>(radioTheme, config.theme);
     const firstRender = useRef(true);
     const [status, setStatus] = useState<Status>('idle');
     const prefix = usePrefix({ status, theme });
@@ -265,11 +265,11 @@ export default createPrompt(
           description = item.description;
         }
 
-        const checkbox = item.checked ? theme.icon.checked : theme.icon.unchecked;
+        const radio = item.checked ? theme.icon.checked : theme.icon.unchecked;
         const color = isActive ? theme.style.highlight : (x: string) => x;
         const cursor = isActive ? theme.icon.cursor : ' ';
 
-        return color(`${cursor}${checkbox} ${item.name}`);
+        return color(`${cursor}${radio} ${item.name}`);
       },
       pageSize,
       loop
