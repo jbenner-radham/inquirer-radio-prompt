@@ -8,7 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [Unreleased]
 ------------
 ### Changed
-- This library now exports in both CJS and ESM formats.
+- This library now exports in both [CJS](https://nodejs.org/api/modules.html) and [ESM](https://nodejs.org/api/esm.html) formats.
 
 [1.2.0] - 2024-10-16
 --------------------
