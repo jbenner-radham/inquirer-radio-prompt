@@ -22,6 +22,7 @@ export default [
       '@stylistic': stylistic
     },
     rules: {
+      '@stylistic/arrow-parens': ['error', 'as-needed'],
       '@stylistic/arrow-spacing': ['error', { before: true, after: true }],
       '@stylistic/block-spacing': ['error', 'always'],
       '@stylistic/comma-dangle': ['error', 'never'],
