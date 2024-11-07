@@ -225,7 +225,6 @@ describe('radio prompt', () => {
     expect(getScreen()).toMatchInlineSnapshot('"✔ Select a number 1"');
   });
 
-
   it('does not scroll down beyond last option when not looping', async () => {
     const { answer, events, getScreen } = await render(radio, {
       message: 'Select a number',
@@ -333,7 +332,6 @@ describe('radio prompt', () => {
 
     expect(getScreen()).toMatchInlineSnapshot('"✔ Select a number 4"');
   });
-
 
   it('allows setting a smaller page size', async () => {
     const { answer, events, getScreen } = await render(radio, {
@@ -701,6 +699,7 @@ describe('radio prompt', () => {
         if (items.length !== 1) {
           return 'Please select only one choice';
         }
+
         return true;
       }
     });
@@ -793,9 +792,10 @@ describe('radio prompt', () => {
             renderSelectedChoices: (selected: { value: number }[]) => {
               if (selected.length > 1) {
                 return `You have selected ${(selected[0] as {
-                  value: number
+                  value: number;
                 }).value} and ${selected.length - 1} more.`;
               }
+
               return `You have selected ${selected
                 .slice(0, 1)
                 .map(c => c.value)

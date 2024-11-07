@@ -77,9 +77,7 @@ type NormalizedChoice<Value> = {
 
 type RadioConfig<
   Value,
-  ChoicesObject =
-    | ReadonlyArray<string | Separator>
-    | ReadonlyArray<Choice<Value> | Separator>
+  ChoicesObject = ReadonlyArray<string | Separator> | ReadonlyArray<Choice<Value> | Separator>
 > = {
   message: string;
   prefix?: string;
@@ -207,9 +205,7 @@ export default createPrompt(
         }
       } else if (isUpKey(key) || isDownKey(key)) {
         if (
-          loop
-            || (isUpKey(key) && active !== bounds.first)
-            || (isDownKey(key) && active !== bounds.last)
+          loop || (isUpKey(key) && active !== bounds.first) || (isDownKey(key) && active !== bounds.last)
         ) {
           const offset = isUpKey(key) ? -1 : 1;
           let next = active;
@@ -258,6 +254,7 @@ export default createPrompt(
 
         if (item.disabled) {
           const disabledLabel = typeof item.disabled === 'string' ? item.disabled : '(disabled)';
+
           return theme.style.disabledChoice(`${item.name} ${disabledLabel}`);
         }
 
@@ -288,10 +285,8 @@ export default createPrompt(
     let helpTipBottom = '';
 
     if (
-      theme.helpMode === 'always'
-        || (theme.helpMode === 'auto'
-          && showHelpTip
-          && (instructions === undefined || instructions))
+      theme.helpMode === 'always' ||
+        (theme.helpMode === 'auto' && showHelpTip && (instructions === undefined || instructions))
     ) {
       if (typeof instructions === 'string') {
         helpTipTop = instructions;
@@ -321,8 +316,8 @@ export default createPrompt(
       error = `\n${theme.style.error(errorMsg)}`;
     }
 
-    return `${prefix} ${message}${helpTipTop}\n`
-      + `${page}${helpTipBottom}${choiceDescription}${error}${ansiEscapes.cursorHide}`;
+    return `${prefix} ${message}${helpTipTop}\n` +
+      `${page}${helpTipBottom}${choiceDescription}${error}${ansiEscapes.cursorHide}`;
   }
 );
 
